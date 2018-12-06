@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.njtu.saasgateway.config.RabbitConfig;
 import edu.njtu.saasgateway.mapper.PicMapper;
 import edu.njtu.saasgateway.model.Pic;
 
@@ -23,9 +25,14 @@ import edu.njtu.saasgateway.model.Pic;
 @RequestMapping("/pic")
 //@Api(tags = "1.1", description = "用户管理", value = "用户管理")
 public class PicHandlerController {
+	private static final Logger log = LoggerFactory.getLogger(PicHandlerController.class);
 
-    private static final Logger log = LoggerFactory.getLogger(PicHandlerController.class);
-
+	private final RabbitTemplate rabbitTemplate;
+    @Autowired
+    public PicHandlerController(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+    
     @Autowired
     private PicMapper picMapper;
 
@@ -37,6 +44,10 @@ public class PicHandlerController {
         try {
         	Pic pic = new Pic(userId,fileName);
 			picMapper.insertSelective(pic);
+			
+			this.rabbitTemplate.convertAndSend(RabbitConfig.DEFAULT_BOOK_QUEUE, pic);
+	        this.rabbitTemplate.convertAndSend(RabbitConfig.MANUAL_BOOK_QUEUE, pic);
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			result = "error";

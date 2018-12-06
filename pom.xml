@@ -120,6 +120,17 @@
 		    <artifactId>aspectjweaver</artifactId>
 		    <version>1.8.10</version>
 		</dependency> -->
+		
+		<!-- 消息队列 -->
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-amqp</artifactId>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.alibaba</groupId>
+	        <artifactId>fastjson</artifactId>
+	        <version>1.2.46</version>
+	    </dependency>
 	</dependencies>
 
 	<build>
