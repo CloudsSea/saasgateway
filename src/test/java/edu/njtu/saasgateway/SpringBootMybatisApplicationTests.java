@@ -62,7 +62,7 @@ public class SpringBootMybatisApplicationTests {
 //        final PageInfo<User> userPageInfo = new PageInfo<>(this.userMapper.selectAll());
 //        log.info("[普通写法] - [{}]", userPageInfo);
     	final Pic pic = new Pic(1L, "p1");
-    	picMapper.insertSelective(pic);
+//    	picMapper.insertSelective(pic);
     }
 
 

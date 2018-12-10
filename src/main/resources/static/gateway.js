@@ -9,7 +9,8 @@ function addToGateWay(fileName) {
 		},
 		dataType : "json",
 		success : function(data) {
-			console.log(132)
+			console.log(132);
+			//页面跳
 		}
 	});
 }

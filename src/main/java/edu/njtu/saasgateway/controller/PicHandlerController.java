@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.njtu.saasgateway.config.RabbitConfig;
 import edu.njtu.saasgateway.mapper.PicMapper;
 import edu.njtu.saasgateway.model.Pic;
+import edu.njtu.saasgateway.util.HttpUtil;
 
 /**
  * Created by Donghua.Chen on 2018/6/20.
@@ -26,12 +27,12 @@ import edu.njtu.saasgateway.model.Pic;
 //@Api(tags = "1.1", description = "用户管理", value = "用户管理")
 public class PicHandlerController {
 	private static final Logger log = LoggerFactory.getLogger(PicHandlerController.class);
-
-	private final RabbitTemplate rabbitTemplate;
-    @Autowired
-    public PicHandlerController(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
-    }
+//
+//	private final RabbitTemplate rabbitTemplate;
+//    @Autowired
+//    public PicHandlerController(RabbitTemplate rabbitTemplate) {
+//        this.rabbitTemplate = rabbitTemplate;
+//    }
     
     @Autowired
     private PicMapper picMapper;
@@ -40,20 +41,30 @@ public class PicHandlerController {
     @PostMapping
     public Map<String, String> post(Long userId,String fileName) {
         log.info("如果是 POST PUT 这种带 @RequestBody 的可以不用写 @ApiImplicitParam");
+        Map<String,String> map = new HashMap<String,String>();
         String result = "success";
         try {
         	Pic pic = new Pic(userId,fileName);
-			picMapper.insertSelective(pic);
+//			picMapper.insertSelective(pic);
 			
-			this.rabbitTemplate.convertAndSend(RabbitConfig.DEFAULT_BOOK_QUEUE, pic);
-	        this.rabbitTemplate.convertAndSend(RabbitConfig.MANUAL_BOOK_QUEUE, pic);
+//			this.rabbitTemplate.convertAndSend(RabbitConfig.DEFAULT_PIC_QUEUE, pic);
+//	        this.rabbitTemplate.convertAndSend(RabbitConfig.MANUAL_PIC_QUEUE, pic);
+			log.info(fileName);
+			
+			String url = "http://127.0.0.1:5000/pichandler";
+			String params = "username="+	"http://saaswork.oss-cn-beijing.aliyuncs.com/"+fileName;
+			String picUrl = HttpUtil.sendPost(url, params);
+			
+			map.put("oriUrl", fileName);
+			map.put("lastUrl", picUrl);
+			
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 			result = "error";
 			e.printStackTrace();
 		}
-        Map<String,String> map = new HashMap<String,String>();
+
         map.put("result",result);
         return map;
     }
