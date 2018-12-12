@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.njtu.saasgateway.config.RabbitConfig;
 import edu.njtu.saasgateway.mapper.PicMapper;
 import edu.njtu.saasgateway.model.Pic;
 import edu.njtu.saasgateway.util.HttpUtil;
@@ -51,7 +49,7 @@ public class PicHandlerController {
 //	        this.rabbitTemplate.convertAndSend(RabbitConfig.MANUAL_PIC_QUEUE, pic);
 			log.info(fileName);
 			
-			String url = "http://127.0.0.1:5000/pichandler";
+			String url = "http://47.52.253.98:32397/pichandler";
 			String params = "username="+	"http://saaswork.oss-cn-beijing.aliyuncs.com/"+fileName;
 			String picUrl = HttpUtil.sendPost(url, params);
 			
