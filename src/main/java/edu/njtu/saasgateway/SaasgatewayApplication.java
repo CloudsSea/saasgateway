@@ -4,9 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.battcn.swagger.annotation.EnableSwagger2Doc;
+
 @RestController
 @SpringBootApplication
-//@EnableSwagger2Doc
+@EnableSwagger2Doc
 public class SaasgatewayApplication {
 
 	public static void main(String[] args) {

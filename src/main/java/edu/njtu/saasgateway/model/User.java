@@ -5,23 +5,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@ApiModel
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 @Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
-//    @ApiModelProperty("用户名")
+    @ApiModelProperty("用户名")
 	private String userName;
-//    @ApiModelProperty("密码")
+    @ApiModelProperty("密码")
 	private String token;
-//    @ApiModelProperty("注册时间")
+    @ApiModelProperty("注册时间")
 	private String createTime;
-//    @ApiModelProperty("备注")
+    @ApiModelProperty("备注")
 	private String remarks;
 	public User() {
 		super();
 	}
+	
 	public User(String userName, String token) {
 		// TODO Auto-generated constructor stub
 		this.userName = userName;

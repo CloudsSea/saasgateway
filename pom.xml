@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -20,6 +19,7 @@
 	</parent>
 
 	<properties>
+		<cucumber.version>1.2.4</cucumber.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
@@ -97,8 +97,11 @@
 			</dependency> <dependency> <groupId>org.apache.commons</groupId> <artifactId>commons-pool2</artifactId> 
 			</dependency> -->
 		<!-- swagger -->
-		<!-- <dependency> <groupId>com.battcn</groupId> <artifactId>swagger-spring-boot-starter</artifactId> 
-			<version>1.4.5-RELEASE</version> </dependency> -->
+		<dependency>
+			<groupId>com.battcn</groupId>
+			<artifactId>swagger-spring-boot-starter</artifactId>
+			<version>1.4.5-RELEASE</version>
+		</dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
@@ -115,6 +118,37 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.46</version>
 		</dependency>
+
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
+			</dependency> <dependency> <groupId>org.springframework.security</groupId> 
+			<artifactId>spring-security-oauth2-client</artifactId> </dependency> -->
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-core</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 
@@ -125,9 +159,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-<!-- dockerfile-maven-plugin 用于打包和上传 Docker Image：
-https://blog.csdn.net/hehuanchun0311/article/details/84316194
- -->
+			<!-- dockerfile-maven-plugin 用于打包和上传 Docker Image： https://blog.csdn.net/hehuanchun0311/article/details/84316194 -->
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
@@ -144,21 +176,41 @@ https://blog.csdn.net/hehuanchun0311/article/details/84316194
 					</resources>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<classpathScope>test</classpathScope>
+							<mainClass>com.chhliu.test.CucumberTest.java</mainClass>
+							<arguments>
+								<argument>--plugin</argument>
+								<argument>pretty</argument>
+								<argument>--glue</argument>
+								<argument>src/test/resources/</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 
 		</plugins>
 
 
-<!-- 		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*</include>
-					<include>**/*.properties</include>
-					<include>**/*.xml</include>
-				</includes>
-				<filtering>false</filtering>
-			</resource>
-		</resources> -->
+		<!-- <resources> <resource> <directory>src/main/resources</directory> <includes> 
+			<include>**/*</include> <include>**/*.properties</include> <include>**/*.xml</include> 
+			</includes> <filtering>false</filtering> </resource> </resources> -->
 	</build>
 
 
