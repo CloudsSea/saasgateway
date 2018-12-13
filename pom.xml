@@ -192,7 +192,7 @@
 						</goals>
 						<configuration>
 							<classpathScope>test</classpathScope>
-							<mainClass>com.chhliu.test.CucumberTest.java</mainClass>
+							<mainClass>edu.njtu.saasgateway.UserCucumberIntegrationTest</mainClass>
 							<arguments>
 								<argument>--plugin</argument>
 								<argument>pretty</argument>
