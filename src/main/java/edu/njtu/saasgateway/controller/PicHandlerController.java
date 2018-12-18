@@ -49,7 +49,7 @@ public class PicHandlerController {
 //	        this.rabbitTemplate.convertAndSend(RabbitConfig.MANUAL_PIC_QUEUE, pic);
 			log.info(fileName);
 			
-			String url = "http://47.52.253.98:32397/pichandler";
+			String url = "http://47.52.253.98:32280/pichandler";
 			String params = "username="+	"http://saaswork.oss-cn-beijing.aliyuncs.com/"+fileName;
 			String picUrl = HttpUtil.sendPost(url, params);
 			
